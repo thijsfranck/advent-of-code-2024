@@ -12,7 +12,7 @@ from advent_of_code_2024.day01 import part2
 )
 def test__solution(fixture: str, expected: int, request: pytest.FixtureRequest) -> None:
     """
-    Test the solution for with various inputs.
+    Test the solution with various inputs.
 
     Asserts:
         - The solution returns the expected result.
