@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-merge-conflict
         name: Check for merge conflicts
@@ -21,7 +21,7 @@ repos:
         args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.2
+    rev: v0.8.1
     hooks:
       - id: ruff
         name: Check for Python linting errors
@@ -30,7 +30,7 @@ repos:
         name: Run Python formatter
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.373
+    rev: v1.1.389
     hooks:
     - id: pyright
       name: pyright (system)
