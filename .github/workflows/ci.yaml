@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python, Poetry and dependencies
+        uses: packetcoders/action-setup-cache-python-poetry@main
+        with:
+          python-version: 3.13
+          poetry-version: 1.8.4
+
+      - name: Update GITHUB_PATH
+        run: echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Run pre-commit hooks
+        uses: pre-commit/action@v3.0.1
+
+      - name: Run tests
+        run: poetry run pytest
+        shell: bash
