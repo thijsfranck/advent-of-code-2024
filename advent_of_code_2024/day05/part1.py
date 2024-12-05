@@ -1,14 +1,14 @@
 from collections import defaultdict
 from collections.abc import Iterable
+from graphlib import TopologicalSorter
 
-type Index = dict[int, set[int]]
+type Graph = dict[int, set[int]]
 type Update = list[int]
 
 
-def parse(data: Iterable[str]) -> tuple[Index, Index, list[Update]]:
-    """Parse the input data into a multimap of rules (before, after) and a list of updates."""
-    before: Index = defaultdict(set)
-    after: Index = defaultdict(set)
+def parse(data: Iterable[str]) -> tuple[Graph, list[Update]]:
+    """Parse the input data into a directed graph and a list of updates."""
+    graph: Graph = defaultdict(set)
     updates: list[Update] = []
 
     state = "rules"
@@ -22,26 +22,22 @@ def parse(data: Iterable[str]) -> tuple[Index, Index, list[Update]]:
 
         if state == "rules":
             a, b = map(int, content.split("|"))
-            after[a].add(b)
-            before[b].add(a)
+            graph[b].add(a)
         else:
             updates.append([int(x) for x in content.split(",")])
 
-    return before, after, updates
+    return graph, updates
 
 
-def is_ordered(update: Update, before: Index, after: Index) -> bool:
-    """Check if the given update is ordered correctly."""
-    for i, x in enumerate(update):
-        remaining = update[i + 1 :]
-        for y in remaining:
-            if x not in before[y] and y not in after[x]:
-                return False
-    return True
+def order_update(update: Update, graph: Graph) -> Update:
+    """Order the given update according to the given graph."""
+    subset = set(update)
+    sorter = TopologicalSorter({k: v & subset for k, v in graph.items() if k in subset})
+    return list(sorter.static_order())
 
 
 def solve(data: Iterable[str]) -> int:
     """Find the sum of the middle elements of the ordered updates."""
-    before, after, updates = parse(data)
-    ordered_updates = [update for update in updates if is_ordered(update, before, after)]
+    graph, updates = parse(data)
+    ordered_updates = [update for update in updates if order_update(update, graph) == update]
     return sum(update[len(update) // 2] for update in ordered_updates)
