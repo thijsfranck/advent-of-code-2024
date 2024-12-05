@@ -32,7 +32,7 @@ def parse(data: Iterable[str]) -> tuple[Graph, list[Update]]:
 def order_update(update: Update, graph: Graph) -> Update:
     """Order the given update according to the given graph."""
     subset = set(update)
-    sorter = TopologicalSorter({k: v & subset for k, v in graph.items() if k in subset})
+    sorter = TopologicalSorter({k: graph[k] & subset for k in subset})
     return list(sorter.static_order())
 
 
