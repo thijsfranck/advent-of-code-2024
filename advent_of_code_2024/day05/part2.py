@@ -2,14 +2,14 @@ from collections import defaultdict
 from collections.abc import Iterable
 from functools import cmp_to_key
 
-type Index = dict[int, list[int]]
+type Index = dict[int, set[int]]
 type Update = list[int]
 
 
 def parse(data: Iterable[str]) -> tuple[Index, Index, list[Update]]:
     """Parse the input data into a multimap of rules (before, after) and a list of updates."""
-    before: Index = defaultdict(list)
-    after: Index = defaultdict(list)
+    before: Index = defaultdict(set)
+    after: Index = defaultdict(set)
     updates: list[Update] = []
 
     state = "rules"
@@ -23,8 +23,8 @@ def parse(data: Iterable[str]) -> tuple[Index, Index, list[Update]]:
 
         if state == "rules":
             a, b = map(int, content.split("|"))
-            after[a].append(b)
-            before[b].append(a)
+            after[a].add(b)
+            before[b].add(a)
         else:
             updates.append([int(x) for x in content.split(",")])
 
