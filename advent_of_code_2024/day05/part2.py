@@ -7,7 +7,7 @@ type Update = list[int]
 
 
 def parse(data: Iterable[str]) -> tuple[Graph, list[Update]]:
-    """Parse the input data into a multimap of rules (before, after) and a list of updates."""
+    """Parse the input data into a directed graph and a list of updates."""
     graph: Graph = defaultdict(set)
     updates: list[Update] = []
 
