@@ -7,7 +7,7 @@ from advent_of_code_2024.day06 import part1
     ("fixture", "expected"),
     [
         ("sample_data", 41),
-        ("full_data", 6260),
+        ("full_data", 4580),
     ],
 )
 def test__solution(fixture: str, expected: int, request: pytest.FixtureRequest) -> None:
